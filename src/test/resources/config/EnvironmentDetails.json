@@ -1,0 +1,6 @@
+{
+	"Prod": {
+		"BaseURI": "https://rahulshettyacademy.com",
+		"AuthValue":"qaclick123"
+	}
+}
