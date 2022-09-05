@@ -1,5 +1,7 @@
 package utilities;
 
+import static io.restassured.RestAssured.given;
+
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 
@@ -20,18 +22,19 @@ public class BaseUtil {
 	public GenericUtil genericUtil;
 	public Context context;
 
-	public BaseUtil(GenericUtil genericUtil,Context context) {		
+	public BaseUtil(GenericUtil genericUtil, Context context) {
 		this.genericUtil = genericUtil;
 		this.context = context;
-	}	
+	}
 
-	public RequestSpecification requestSpecification()
-			throws JsonIOException, JsonSyntaxException, Throwable {
+	public RequestSpecification requestSpecification() throws JsonIOException, JsonSyntaxException, Throwable {
 
 		if (requestSpec == null) {
 			PrintStream log = new PrintStream(new FileOutputStream(context.getLogFileName()));
-			requestSpec = new RequestSpecBuilder().setRelaxedHTTPSValidation().setBaseUri(genericUtil.fetchValueBasedOnKey("BaseURI"))
-					.addFilter(RequestLoggingFilter.logRequestTo(log)).addQueryParam("key", genericUtil.fetchValueBasedOnKey("AuthValue"))
+			requestSpec = new RequestSpecBuilder().setRelaxedHTTPSValidation()
+					.setBaseUri(genericUtil.fetchValueBasedOnKey("BaseURI"))
+					.addFilter(RequestLoggingFilter.logRequestTo(log))
+					.addQueryParam("key", genericUtil.fetchValueBasedOnKey("AuthValue"))
 					.addFilter(ResponseLoggingFilter.logResponseTo(log)).setContentType(ContentType.JSON).build();
 			return requestSpec;
 		}
@@ -43,10 +46,18 @@ public class BaseUtil {
 	public ResponseSpecification responseSpecification(int responseCode)
 			throws JsonIOException, JsonSyntaxException, Throwable {
 
-		ResponseSpecification responseSpec = new ResponseSpecBuilder().expectStatusCode(responseCode).expectContentType(ContentType.JSON)
-				.build();
+		ResponseSpecification responseSpec = new ResponseSpecBuilder().expectStatusCode(responseCode)
+				.expectContentType(ContentType.JSON).build();
 		return responseSpec;
 
+	}
+
+	public void addPlaceAPI() throws JsonIOException, JsonSyntaxException, Throwable {
+
+		String placeID = given().spec(requestSpecification()).body(genericUtil.addPlacePayload()).when()
+				.post(API_EndPoints.valueOf("AddPlaceAPI").getEndPoint()).then().spec(responseSpecification(200))
+				.extract().response().jsonPath().get("place_id");
+		context.setPlace_id(placeID);
 	}
 
 }

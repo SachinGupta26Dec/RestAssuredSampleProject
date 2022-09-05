@@ -9,6 +9,8 @@ import org.testng.Assert;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 
+import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -27,6 +29,11 @@ public class GenericStepDef extends BaseUtil {
 		super(genericUtil,context);
 	}
 
+	/*
+	 * @Before(order = 100, value = "@GetPlaceAPI_Exclude") public void setUp1()
+	 * throws JsonIOException, JsonSyntaxException, Throwable { addPlaceAPI(); }
+	 */	
+	
 	@Given("{string} Payload")
 	public void payload(String payload) throws JsonIOException, JsonSyntaxException, FileNotFoundException, Throwable {
 
