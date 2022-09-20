@@ -81,6 +81,25 @@
 						<suiteXmlFile>testng.xml</suiteXmlFile>
 					</suiteXmlFiles>
 					<testFailureIgnore>true</testFailureIgnore>
+					
+						<!-- <parallel>methods</parallel>
+					<threadCount>2</threadCount>
+					<includes>
+						<include>**/temyersRunner*.java</include>
+					</includes>
+					<properties>
+						<property>
+							<name>dataproviderthreadcount</name>
+							<value>5</value>
+						</property>
+					</properties>
+					<testFailureIgnore>true</testFailureIgnore> -->
+
+					<!-- <forkCount>10</forkCount>
+					<includes>
+						<include>**/temyersRunner*.java</include>
+					</includes> -->
+
 				</configuration>
 			</plugin>
 			<plugin>
